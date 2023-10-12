@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="438.0" prefWidth="882.0" spacing="20.0" styleClass="fondos" stylesheets="@../../../Estilos/Estilos.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.p1_1accesodatosvet.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <AnchorPane prefHeight="399.0" prefWidth="887.0">
+         <children>
+            <TableView fx:id="tabla" layoutX="14.0" layoutY="40.0" prefHeight="204.0" prefWidth="545.0">
+              <columns>
+                <TableColumn fx:id="cidMascota" prefWidth="75.0" text="id" />
+                <TableColumn fx:id="cNombreMascota" prefWidth="75.0" text="nombre" />
+                  <TableColumn fx:id="cRazaMascota" prefWidth="75.0" text="raza" />
+                  <TableColumn fx:id="cPesoMascota" prefWidth="75.0" text="peso/Kg" />
+                  <TableColumn fx:id="cFechaNMascota" prefWidth="75.0" text="FechaN" />
+                  <TableColumn fx:id="cCausaConsultaMascota" prefWidth="75.0" text="CausaConsulta" />
+                  <TableColumn fx:id="cOtrosMascota" prefWidth="75.0" text="Otros" />
+              </columns>
+            </TableView>
+            <Button fx:id="btnBuscar" layoutX="710.0" layoutY="265.0" mnemonicParsing="false" onAction="#buscarMascota" text="Buscar" />
+            <TextField fx:id="txtBuscar" layoutX="522.0" layoutY="271.0" />
+            <Button fx:id="btnVolver" layoutX="14.0" layoutY="250.0" mnemonicParsing="false" onAction="#volverTabla" text="Lista " />
+            <TextField fx:id="txtModificar" layoutX="522.0" layoutY="319.0" />
+            <Button fx:id="btnBuscar1" layoutX="710.0" layoutY="313.0" mnemonicParsing="false" onAction="#cambiarPantallaModificar" prefHeight="44.0" prefWidth="85.0" text="Modificar" />
+            <Label layoutX="97.0" layoutY="255.0" text="Para eliminar una mascota haz doble click encima de un registro" />
+            <Button fx:id="btnAnyadir" layoutX="573.0" layoutY="200.0" mnemonicParsing="false" onAction="#anyadirMascota" text="Añadir" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
