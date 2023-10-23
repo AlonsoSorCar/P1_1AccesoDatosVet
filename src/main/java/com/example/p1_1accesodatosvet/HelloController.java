@@ -85,7 +85,6 @@ public class HelloController implements Initializable {
             if (event.getClickCount() == 2) {
                 mascotaSeleccionada = tabla.getSelectionModel().getSelectedItem();
                 if (mascotaSeleccionada != null) {
-                    // Mostrar un diálogo de confirmación antes de borrar la mascota
                     //el import!!
                     String mensaje = "¿Estás seguro de que deseas eliminar a " + mascotaSeleccionada.getNombre() + "?";
                     if (AlertUtils.mostrarConfirmacion(mensaje)) {
@@ -99,7 +98,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void buscarMascota(ActionEvent event) {
+    void buscarMascota(ActionEvent event) throws SQLException, IOException, ClassNotFoundException {
         MascotaDAO mascotaDAO = new MascotaDAO();
         mascotaDAO.loadDriver();
         mascotaDAO.connect();

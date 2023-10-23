@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.Properties;
 
 public class MascotaDAO {
-    //private static Connection conexion;
+    private static Connection conexion;
 
     // Conexión a la base de datos
     private static Connection conn = null;
@@ -74,26 +74,26 @@ public class MascotaDAO {
         }
     }
 
-    public ResultSet buscarMascota(String mas) {
+    public ResultSet buscarMascota(String nombre) {
         try {
-            String sql = "SELECT * FROM mascotas WHERE nombre=+ '" + mas + "';";
+            String sql = "SELECT * FROM mascotas WHERE nombre = ?";
             PreparedStatement sentencia = conn.prepareStatement(sql);
-            ResultSet resultado = sentencia.executeQuery(sql);
+            sentencia.setString(1, nombre); // Asigna el valor del parámetro
+            ResultSet resultado = sentencia.executeQuery();
             return resultado;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void eliminarMascota(String mas) {
+    public void eliminarMascota(String nombre) {
         try {
-            String sql = "DELETE FROM mascotas WHERE nombre = '" + mas + "';";
+            String sql = "DELETE FROM mascotas WHERE nombre = ?";
             PreparedStatement sentencia = conn.prepareStatement(sql);
-            sentencia.executeUpdate();
-
+            sentencia.setString(1, nombre);
             int borrado = sentencia.executeUpdate();
-            System.out.println(sentencia.executeUpdate());
-            if (borrado <= 1) {
+
+            if (borrado > 0) {
                 System.out.println("Mascota borrada exitosamente.");
                 AlertUtils.mostrarAlerta("Mascota borrada exitosamente.");
             } else {
@@ -101,27 +101,31 @@ public class MascotaDAO {
                 AlertUtils.mostrarError("No se pudo borrar la mascota.");
             }
         } catch (SQLException e) {
-            System.out.println("Algo ha ido mal en la funcion eliminarMascota");
+            System.out.println("Algo ha ido mal en la función eliminarMascota");
             throw new RuntimeException(e);
         }
     }
 
+
     public boolean comprobarMascotas(String nombre) {
         try {
-            Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM mascotas WHERE nombre=+ '" + nombre + "';";
-            ResultSet rs = stmt.executeQuery(sql);
+            String sql = "SELECT * FROM mascotas WHERE nombre = ?";
+            PreparedStatement sentencia = conn.prepareStatement(sql);
+            sentencia.setString(1, nombre);
+            ResultSet rs = sentencia.executeQuery();
 
             if (rs.next()) {
-                //si hay registro return true
+                // Si hay registros la mascota EXISTE
                 return true;
             } else {
+                // Si no hay registros la mascota NO existe
                 return false;
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
+
 
     public void actualizarMascota(Mascota mascota) {
         try {

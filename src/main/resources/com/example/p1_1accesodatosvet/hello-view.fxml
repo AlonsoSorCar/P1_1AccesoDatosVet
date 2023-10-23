@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox alignment="CENTER" prefHeight="438.0" prefWidth="882.0" spacing="20.0" styleClass="fondos" stylesheets="@../../../Estilos/Estilos.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.p1_1accesodatosvet.HelloController">
     <padding>
@@ -32,7 +33,10 @@
             <Button fx:id="btnVolver" layoutX="14.0" layoutY="250.0" mnemonicParsing="false" onAction="#volverTabla" text="Lista " />
             <TextField fx:id="txtModificar" layoutX="522.0" layoutY="319.0" />
             <Button fx:id="btnBuscar1" layoutX="710.0" layoutY="313.0" mnemonicParsing="false" onAction="#cambiarPantallaModificar" prefHeight="44.0" prefWidth="85.0" text="Modificar" />
-            <Label layoutX="97.0" layoutY="255.0" text="Para eliminar una mascota haz doble click encima de un registro" />
+            <Label layoutX="97.0" layoutY="255.0" text="Para eliminar una mascota haz doble click encima de un registro">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font></Label>
             <Button fx:id="btnAnyadir" layoutX="573.0" layoutY="200.0" mnemonicParsing="false" onAction="#anyadirMascota" text="Añadir" />
          </children>
       </AnchorPane>

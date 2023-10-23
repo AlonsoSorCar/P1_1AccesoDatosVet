@@ -58,7 +58,7 @@ public class ControladorPantalla3 {
                 MascotaDAO mascotaDAO = new MascotaDAO();
                 mascotaDAO.insertarMascota(mascotaNueva);
             }else{
-                AlertUtils.mostrarAlerta("Debes rellenar los campos");
+                AlertUtils.mostrarError("Debes rellenar los campos");
             }
 
         } catch (Exception ex) {
