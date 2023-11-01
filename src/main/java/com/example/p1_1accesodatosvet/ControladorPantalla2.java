@@ -58,8 +58,8 @@ public class ControladorPantalla2 {
         if (nombreMascota != null) {
             MascotaDAO mascotaDAO = new MascotaDAO();
             try {
-                mascotaDAO.loadDriver();
-                mascotaDAO.connect();
+//                mascotaDAO.loadDriver();
+                mascotaDAO.conectar();
                 ResultSet rs = mascotaDAO.buscarMascota(nombreMascota);
 
                 if (rs.next()) {
@@ -75,6 +75,10 @@ public class ControladorPantalla2 {
                 }
             } catch (SQLException e) {
                 System.out.println("Algo ha ido mal en la funcion setNombreMascota");
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }

@@ -71,7 +71,7 @@ public class HelloController implements Initializable {
 
         try {
             MascotaDAO mascotaDAO = new MascotaDAO();
-            mascotaDAO.connect();
+            mascotaDAO.conectar();
             ResultSet rs = mascotaDAO.datosMascotas();
 
             llenadoTabla(rs);
@@ -100,8 +100,8 @@ public class HelloController implements Initializable {
     @FXML
     void buscarMascota(ActionEvent event) throws SQLException, IOException, ClassNotFoundException {
         MascotaDAO mascotaDAO = new MascotaDAO();
-        mascotaDAO.loadDriver();
-        mascotaDAO.connect();
+//        mascotaDAO.loadDriver();
+        mascotaDAO.conectar();
         String nombreMascota = txtBuscar.getText();
         if (!nombreMascota.isEmpty() && mascotaDAO.comprobarMascotas(txtBuscar.getText())) {
             mascotaDAO.buscarMascota(txtBuscar.getText());
@@ -124,7 +124,7 @@ public class HelloController implements Initializable {
         funcionSeteadoTabla();
         try {
             MascotaDAO mascotaDAO = new MascotaDAO();
-            mascotaDAO.connect();
+            mascotaDAO.conectar();
             ResultSet rs = mascotaDAO.datosMascotas();
 
             llenadoTabla(rs);

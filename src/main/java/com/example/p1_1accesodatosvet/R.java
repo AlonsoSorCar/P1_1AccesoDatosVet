@@ -11,7 +11,7 @@ public class R {
     }
 
     public static InputStream getProperties(String name) {
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream("configuration" + File.separator + name);
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream("src/main/java/configuration/database.properties" + File.separator + name);
     }
 
     public static URL getUI(String name) {

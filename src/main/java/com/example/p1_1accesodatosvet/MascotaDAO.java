@@ -1,72 +1,79 @@
 package com.example.p1_1accesodatosvet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
+
+import com.example.p1_1accesodatosvet.R;
 
 public class MascotaDAO {
     private static Connection conexion;
 
-    // Conexión a la base de datos
-    private static Connection conn = null;
+    /*   // Conexión a la base de datos
+       private static Connection conn = null;
 
-    // Configuración de la conexión a la base de datos
-    private static final String DB_HOST = "localhost";
-    private static final String DB_PORT = "3306";
-    private static final String DB_NAME = "veterinario";
-    private static final String DB_URL = "jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "?serverTimezone=UTC";
-    private static final String DB_USER = "root";
-    private static final String DB_PASS = "toor";
-    private static final String DB_MSQ_CONN_OK = "CONEXIÓN CORRECTA";
-    private static final String DB_MSQ_CONN_NO = "ERROR EN LA CONEXIÓN";
+       // Configuración de la conexión a la base de datos
+       private static final String DB_HOST = "localhost";
+       private static final String DB_PORT = "3306";
+       private static final String DB_NAME = "veterinario";
+       private static final String DB_URL = "jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "?serverTimezone=UTC";
+       private static final String DB_USER = "root";
+       private static final String DB_PASS = "toor";
+       private static final String DB_MSQ_CONN_OK = "CONEXIÓN CORRECTA";
+       private static final String DB_MSQ_CONN_NO = "ERROR EN LA CONEXIÓN";
 
-    public static boolean loadDriver() {
-        try {
-            System.out.print("Cargando Driver...");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("OK!");
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+       public static boolean loadDriver() {
+           try {
+               System.out.print("Cargando Driver...");
+               Class.forName("com.mysql.cj.jdbc.Driver");
+               System.out.println("OK!");
+               return true;
+           } catch (Exception ex) {
+               ex.printStackTrace();
+               return false;
+           }
+       }
+
+       public static boolean connect() {
+           try {
+               System.out.print("Conectando a la base de datos...");
+               conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+               System.out.println("OK!");
+               return true;
+           } catch (SQLException ex) {
+               ex.printStackTrace();
+               return false;
+           }
+       }*/
+    public void conectar() throws ClassNotFoundException, SQLException, IOException {
+        System.out.println("Conectando a la base de datos...");
+
+                Properties properties= new Properties();
+
+                properties.load(new FileInputStream(new File("src/main/resources/configuration/database.properties")));
+                String host=String.valueOf(properties.get("host"));
+                String port=String.valueOf(properties.get("port"));
+                String name=String.valueOf(properties.get("name"));
+                String username=String.valueOf(properties.get("username"));
+                String password=String.valueOf(properties.get("password"));
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
+                        username, password);
+
+
     }
 
-    public static boolean connect() {
-        try {
-            System.out.print("Conectando a la base de datos...");
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            System.out.println("OK!");
-            return true;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
-/*    public void conectar() throws ClassNotFoundException, SQLException, IOException {
-        System.out.println("conectando...");
-        Properties configuration = new Properties();
-        configuration.load(R.getProperties("database.properties"));
-        String host = configuration.getProperty("host");
-        String port = configuration.getProperty("port");
-        String name = configuration.getProperty("name");
-        String username = configuration.getProperty("username");
-        String password = configuration.getProperty("password");
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
-                username, password);
-
-    }
-
-   public void desconectar() throws SQLException {
+    public void desconectar() throws SQLException {
         conexion.close();
-    }*/
+    }
 
     public ResultSet datosMascotas() {
         try {
             String sql = "SELECT * FROM mascotas";
-            PreparedStatement sentencia = conn.prepareStatement(sql);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             ResultSet resultado = sentencia.executeQuery(sql);
             return resultado;
         } catch (SQLException e) {
@@ -77,7 +84,7 @@ public class MascotaDAO {
     public ResultSet buscarMascota(String nombre) {
         try {
             String sql = "SELECT * FROM mascotas WHERE nombre = ?";
-            PreparedStatement sentencia = conn.prepareStatement(sql);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setString(1, nombre); // Asigna el valor del parámetro
             ResultSet resultado = sentencia.executeQuery();
             return resultado;
@@ -89,7 +96,7 @@ public class MascotaDAO {
     public void eliminarMascota(String nombre) {
         try {
             String sql = "DELETE FROM mascotas WHERE nombre = ?";
-            PreparedStatement sentencia = conn.prepareStatement(sql);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setString(1, nombre);
             int borrado = sentencia.executeUpdate();
 
@@ -110,7 +117,7 @@ public class MascotaDAO {
     public boolean comprobarMascotas(String nombre) {
         try {
             String sql = "SELECT * FROM mascotas WHERE nombre = ?";
-            PreparedStatement sentencia = conn.prepareStatement(sql);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setString(1, nombre);
             ResultSet rs = sentencia.executeQuery();
 
@@ -130,7 +137,7 @@ public class MascotaDAO {
     public void actualizarMascota(Mascota mascota) {
         try {
             String sql = "UPDATE mascotas SET nombre = ?, raza = ?, peso = ?, fechaN = ?, causaConsulta = ?, otros = ? WHERE id = ?";
-            PreparedStatement sentencia = conn.prepareStatement(sql);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setString(1, mascota.getNombre());
             sentencia.setString(2, mascota.getRaza());
             sentencia.setDouble(3, mascota.getPeso());
@@ -151,11 +158,12 @@ public class MascotaDAO {
             throw new RuntimeException(e);
         }
     }
+
     public void insertarMascota(Mascota mascota) {
         try {
             String sql = "INSERT INTO mascotas (nombre, raza, peso, fechaN, causaConsulta, otros) VALUES (?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement sentencia = conn.prepareStatement(sql);
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
             sentencia.setString(1, mascota.getNombre());
             sentencia.setString(2, mascota.getRaza());
             sentencia.setDouble(3, mascota.getPeso());
