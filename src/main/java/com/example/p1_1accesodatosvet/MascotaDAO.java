@@ -82,7 +82,7 @@ public class MascotaDAO {
         try {
             String sql = "SELECT * FROM mascotas WHERE nombre = ?";
             PreparedStatement sentencia = conexion.prepareStatement(sql);
-            sentencia.setString(1, nombre); // Asigna el valor del parámetro
+            sentencia.setString(1, nombre);
             ResultSet resultado = sentencia.executeQuery();
             return resultado;
         } catch (SQLException e) {
