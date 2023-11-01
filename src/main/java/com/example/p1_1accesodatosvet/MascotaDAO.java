@@ -3,11 +3,8 @@ package com.example.p1_1accesodatosvet;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
-
-import com.example.p1_1accesodatosvet.R;
 
 public class MascotaDAO {
     private static Connection conexion;
