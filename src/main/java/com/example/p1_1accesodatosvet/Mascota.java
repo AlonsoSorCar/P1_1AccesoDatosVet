@@ -2,6 +2,10 @@ package com.example.p1_1accesodatosvet;
 
 import java.util.Date;
 
+/**
+ * Clase Mascota
+ * Clase para poder operar con las mascotas de la aplicacion de veterinario.
+ */
 public class Mascota {
     private int id;
 

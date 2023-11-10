@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.Principal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,7 +60,11 @@ public class HelloController implements Initializable {
     @FXML
     private Button btnAnyadir;
 
-
+    /**
+     * Metodo initialize para hacer la carga de la tabla
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         mascotas = FXCollections.observableArrayList();
@@ -80,12 +83,11 @@ public class HelloController implements Initializable {
             System.out.println("Algo ha ido mal en el initialize");
             e.printStackTrace();
         }
-        //para la seleccion de la mascota
+        //para la elegir de la mascota
         tabla.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 mascotaSeleccionada = tabla.getSelectionModel().getSelectedItem();
                 if (mascotaSeleccionada != null) {
-                    //el import!!
                     String mensaje = "¿Estás seguro de que deseas eliminar a " + mascotaSeleccionada.getNombre() + "?";
                     if (AlertUtils.mostrarConfirmacion(mensaje)) {
                         MascotaDAO mascotaDAO = new MascotaDAO();
@@ -97,10 +99,17 @@ public class HelloController implements Initializable {
 
     }
 
+    /**
+     * Metodo buscarMascota
+     * Metodo para hacer la busqueda de la mascota en la base de datos y poderla mostrar en la tabla
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @FXML
     void buscarMascota(ActionEvent event) throws SQLException, IOException, ClassNotFoundException {
         MascotaDAO mascotaDAO = new MascotaDAO();
-//        mascotaDAO.loadDriver();
         mascotaDAO.conectar();
         String nombreMascota = txtBuscar.getText();
         if (!nombreMascota.isEmpty() && mascotaDAO.comprobarMascotas(txtBuscar.getText())) {
@@ -116,10 +125,16 @@ public class HelloController implements Initializable {
 
     }
 
-
+    /**
+     * Metodo volverTabla
+     * Metodo para recargar la tabla o volver al estado inicial en el que se nos inicializa.
+     * Algunos de estos metodos hacen llamada a otros con motivo de ahorro de codigo y mayor eficiencia
+     * @param event
+     */
     @FXML
     void volverTabla(ActionEvent event) {
         mascotas = FXCollections.observableArrayList();
+        txtBuscar.clear();
         //Funcion de seteado de la tabla, para no repetir codigo
         funcionSeteadoTabla();
         try {
@@ -135,6 +150,12 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Metodo cambiarPantallaModificar
+     * Metodo para hacer el cambio a la pantalla de modificacion de datos de una mascota
+     * Hace el metodo en base al nombre de la mascota que se introduce en el area de texto
+     * @param event
+     */
     @FXML
     void cambiarPantallaModificar(ActionEvent event) {
         MascotaDAO mascotaDAO = new MascotaDAO();
@@ -168,6 +189,12 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Metodo anyadirMascota
+     * Metodo para añadir una mascota nueva a la base de datos. Te manda a la pantalla donde se pueden
+     * rellenar los campos en base a lo que tenemos en la base de datos
+     * @param event
+     */
     @FXML
     void anyadirMascota(ActionEvent event) {
         try {
@@ -187,7 +214,11 @@ public class HelloController implements Initializable {
         }
     }
 
-
+    /**
+     * Metodo funcionSeteadoTabla
+     * Funcion recurso para utilizar en el resto de metodos que lo necesiten
+     *
+     */
     void funcionSeteadoTabla() {
         try {
             this.cidMascota.setCellValueFactory(new PropertyValueFactory("id"));
@@ -203,6 +234,12 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Metodo llenadoTabla
+     * Metodo para hacer el llenado de los campos de la tabla.
+     * Metodo recurso para otros metodos que necesitan este metodo.
+     * @param rs
+     */
     private void llenadoTabla(ResultSet rs) {
         try {
             while (rs.next()) {

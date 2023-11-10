@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="438.0" prefWidth="882.0" spacing="20.0" styleClass="fondos" stylesheets="@../../../Estilos/Estilos.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.p1_1accesodatosvet.HelloController">
+<VBox alignment="CENTER" prefHeight="438.0" prefWidth="882.0" spacing="20.0" styleClass="fondos" stylesheets="@../../../Estilos/Estilos.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.p1_1accesodatosvet.ControladorLogin">
 
     <children>
         <AnchorPane prefHeight="399.0" prefWidth="887.0">
@@ -25,12 +25,13 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Button fx:id="btnEntrar" layoutX="271.0" layoutY="240.0" mnemonicParsing="false" onAction="#entrarRegistro" text="Entrar" />
+            <Button fx:id="btnEntrar" layoutX="271.0" layoutY="240.0" mnemonicParsing="false" onAction="#logear" text="Entrar" />
             <Text layoutX="505.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VETERINARIO">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Text>
+            <Button fx:id="btnRegistrar" layoutX="28.0" layoutY="354.0" mnemonicParsing="false" onAction="#registrar" text="Registrar" />
          </children></AnchorPane>
     </children>
 </VBox>

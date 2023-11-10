@@ -22,7 +22,7 @@ public class AlertUtils {
         alert.setTitle("Confirmación");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
-
+        //creo botones con la opcion si o no
         ButtonType botonSi = new ButtonType("Sí");
         ButtonType botonNo = new ButtonType("No");
 

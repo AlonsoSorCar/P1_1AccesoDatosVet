@@ -7,66 +7,49 @@ import java.sql.*;
 import java.util.Properties;
 
 public class MascotaDAO {
-    private static Connection conexion;
+    static Connection conexion;
 
-    /*   // Conexión a la base de datos
-       private static Connection conn = null;
-
-       // Configuración de la conexión a la base de datos
-       private static final String DB_HOST = "localhost";
-       private static final String DB_PORT = "3306";
-       private static final String DB_NAME = "veterinario";
-       private static final String DB_URL = "jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "?serverTimezone=UTC";
-       private static final String DB_USER = "root";
-       private static final String DB_PASS = "toor";
-       private static final String DB_MSQ_CONN_OK = "CONEXIÓN CORRECTA";
-       private static final String DB_MSQ_CONN_NO = "ERROR EN LA CONEXIÓN";
-
-       public static boolean loadDriver() {
-           try {
-               System.out.print("Cargando Driver...");
-               Class.forName("com.mysql.cj.jdbc.Driver");
-               System.out.println("OK!");
-               return true;
-           } catch (Exception ex) {
-               ex.printStackTrace();
-               return false;
-           }
-       }
-
-       public static boolean connect() {
-           try {
-               System.out.print("Conectando a la base de datos...");
-               conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-               System.out.println("OK!");
-               return true;
-           } catch (SQLException ex) {
-               ex.printStackTrace();
-               return false;
-           }
-       }*/
+    /**
+     * Metodo conectar
+     * Metodo para hacer la conexion con la base de datos MySQL
+     * Utiliza fichero propierties para hacer la lectura de los datos para la conexion
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws IOException
+     */
     public void conectar() throws ClassNotFoundException, SQLException, IOException {
         System.out.println("Conectando a la base de datos...");
 
-                Properties properties= new Properties();
+        Properties properties = new Properties();
 
-                properties.load(new FileInputStream(new File("src/main/resources/configuration/database.properties")));
-                String host=String.valueOf(properties.get("host"));
-                String port=String.valueOf(properties.get("port"));
-                String name=String.valueOf(properties.get("name"));
-                String username=String.valueOf(properties.get("username"));
-                String password=String.valueOf(properties.get("password"));
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
-                        username, password);
+        properties.load(new FileInputStream(new File("src/main/resources/configuration/database.properties")));
+        String host = String.valueOf(properties.get("host"));
+        String port = String.valueOf(properties.get("port"));
+        String name = String.valueOf(properties.get("name"));
+        String username = String.valueOf(properties.get("username"));
+        String password = String.valueOf(properties.get("password"));
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
+                username, password);
 
 
     }
 
+    /**
+     *Metodo desconectar
+     * Metodo para hacer la desconexion a la bd
+     * @throws SQLException
+     */
     public void desconectar() throws SQLException {
         conexion.close();
     }
 
+    /**
+     * Metodo datosMascotas
+     * Metodo para hacer la busqueda de los datos de las mascotas
+     *
+     * @return
+     */
     public ResultSet datosMascotas() {
         try {
             String sql = "SELECT * FROM mascotas";
@@ -78,6 +61,13 @@ public class MascotaDAO {
         }
     }
 
+    /**
+     * Metodo buscarMascota
+     * Para hacer una busqueda de las mascotas en la BD por el nombre de la mascota.
+     * Se usa en un controlador pasando el nombre de la mascota por el campo de texto y dandole al boton buscar
+     * @param nombre
+     * @return
+     */
     public ResultSet buscarMascota(String nombre) {
         try {
             String sql = "SELECT * FROM mascotas WHERE nombre = ?";
@@ -90,6 +80,30 @@ public class MascotaDAO {
         }
     }
 
+    /**
+     * Metodo buscarPersonas
+     * Para hacer una busqueda de los usuarios en la BD por el nombre de la persona.
+     * @param nombre
+     * @return
+     */
+    public ResultSet buscarPersonas(String nombre) {
+        try {
+            String sql = "SELECT * FROM usuarios WHERE nombre = ?";
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
+            sentencia.setString(1, nombre);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *  Metodo eliminarMascota
+     * Metodo para hacer la eliminacion de una mascota buscandola por el nombre
+     * Manda una serie de alerts si hay errores
+     * @param nombre
+     */
     public void eliminarMascota(String nombre) {
         try {
             String sql = "DELETE FROM mascotas WHERE nombre = ?";
@@ -110,7 +124,12 @@ public class MascotaDAO {
         }
     }
 
-
+    /**
+     * Metodo comprobarMascotas
+     * Metodo hecho para hacer la comprobación de si la mascota existe o no en la BD
+     * @param nombre
+     * @return
+     */
     public boolean comprobarMascotas(String nombre) {
         try {
             String sql = "SELECT * FROM mascotas WHERE nombre = ?";
@@ -130,7 +149,12 @@ public class MascotaDAO {
         }
     }
 
-
+    /**
+     * Metodo actualizarMascota
+     * Metodo para hacer el update de las mascotas con todos sus atributos
+     * Manda alert si algo ha ido mal
+     * @param mascota
+     */
     public void actualizarMascota(Mascota mascota) {
         try {
             String sql = "UPDATE mascotas SET nombre = ?, raza = ?, peso = ?, fechaN = ?, causaConsulta = ?, otros = ? WHERE id = ?";
@@ -156,6 +180,12 @@ public class MascotaDAO {
         }
     }
 
+    /**
+     * Metodo insertarMascota
+     * Inserta una nueva mascota con todos los parametros necesarios.
+     * Manda alert si algo ha ido mal
+     * @param mascota
+     */
     public void insertarMascota(Mascota mascota) {
         try {
             String sql = "INSERT INTO mascotas (nombre, raza, peso, fechaN, causaConsulta, otros) VALUES (?, ?, ?, ?, ?, ?)";
@@ -178,6 +208,37 @@ public class MascotaDAO {
             }
         } catch (SQLException e) {
             System.out.println("Algo ha ido mal en la función insertarMascota");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Metodo insertarUsuario
+     * Metodo para hacer la insercion de usuarios.
+     * Se utiliza en el registro
+     * @param nombre
+     * @param salt
+     * @param contrasenaHash
+     */
+    public void insertarUsuario(String nombre, String salt, String contrasenaHash) {
+        try {
+            String sql = "INSERT INTO usuarios (nombre, salt, contrasena_hash) VALUES (?, ?, ?)";
+
+            PreparedStatement sentencia = conexion.prepareStatement(sql);
+            sentencia.setString(1, nombre);
+            sentencia.setString(2, salt);
+            sentencia.setString(3, contrasenaHash);
+
+            int filasInsertadas = sentencia.executeUpdate();
+            if (filasInsertadas == 1) {
+                System.out.println("Usuario insertado exitosamente.");
+                AlertUtils.mostrarAlerta("Usuario insertado exitosamente.");
+            } else {
+                System.out.println("No se pudo insertar el usuario.");
+                AlertUtils.mostrarError("No se pudo insertar el usuario.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Algo ha ido mal en la función insertarUsuario");
             throw new RuntimeException(e);
         }
     }

@@ -41,7 +41,13 @@ public class ControladorPantalla3 {
 
     @FXML
     private Button btnVolver;
-
+    MascotaDAO mascotaDAO = new MascotaDAO();
+    /**
+     * Metodo guardarInsercion
+     * Metodo para hacer el guardado de la mascota en la BD
+     * Usa comprobaciones para el llenado de los campos necesarios.
+     * @param event
+     */
     @FXML
     void guardarInsercion(ActionEvent event) {
         try {
@@ -55,10 +61,11 @@ public class ControladorPantalla3 {
 
                 Mascota mascotaNueva = new Mascota( nombre, raza, peso, fechaN, causaConsulta, otros);
 
-                MascotaDAO mascotaDAO = new MascotaDAO();
+
                 mascotaDAO.insertarMascota(mascotaNueva);
             }else{
                 AlertUtils.mostrarError("Debes rellenar los campos");
+                System.out.println("Debes de rellenar todos los campos");
             }
 
         } catch (Exception ex) {
@@ -67,7 +74,12 @@ public class ControladorPantalla3 {
         }
     }
 
-
+    /**
+     * Metodo volverAPantalla1
+     * Metodo recurso para volver a la pantalla principal.
+     * Se utiliza en todos los botones de volver o en cualquier operación similar
+     * @param event
+     */
     @FXML
     void volverAPantalla1(ActionEvent event) {
         try {

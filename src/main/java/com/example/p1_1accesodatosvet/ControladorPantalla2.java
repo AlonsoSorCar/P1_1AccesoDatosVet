@@ -53,12 +53,17 @@ public class ControladorPantalla2 {
 
     @FXML
     private Button btnAnyadir;
+    MascotaDAO mascotaDAO = new MascotaDAO();
 
+    /**
+     * Metodo setNombreMascota
+     * Metodo para hacer la modificación de una mascota
+     * comprueba si existe la mascota o no.
+     * @param nombreMascota
+     */
     public void setNombreMascota(String nombreMascota) {
         if (nombreMascota != null) {
-            MascotaDAO mascotaDAO = new MascotaDAO();
             try {
-//                mascotaDAO.loadDriver();
                 mascotaDAO.conectar();
                 ResultSet rs = mascotaDAO.buscarMascota(nombreMascota);
 
@@ -71,7 +76,8 @@ public class ControladorPantalla2 {
                     txtCausaConsulta.setText(rs.getString("causaConsulta"));
                     txtOtros.setText(rs.getString("otros"));
                 } else {
-                    AlertUtils.mostrarError("MASCOTA NO ENCONTRADA EN LA BASE DE DATOS");
+                    AlertUtils.mostrarError("Mascota no encontrada en la base de datos");
+                    System.out.println("Mascota no encontrada en la base de datos");
                 }
             } catch (SQLException e) {
                 System.out.println("Algo ha ido mal en la funcion setNombreMascota");
@@ -84,7 +90,12 @@ public class ControladorPantalla2 {
         }
     }
 
-
+    /**
+     * Metodo guardarModificacion
+     * Metodo asociado al onAction del boton de guardado.
+     * hace el guardado de los datos modificados en la BD
+     * @param event
+     */
     @FXML
     void guardarModificacion(ActionEvent event) {
         try {
@@ -98,15 +109,21 @@ public class ControladorPantalla2 {
 
             Mascota mascotaActualizada = new Mascota(id, nombre, raza, peso, fechaN, causaConsulta, otros);
 
-            MascotaDAO mascotaDAO = new MascotaDAO();
             mascotaDAO.actualizarMascota(mascotaActualizada);
         } catch (Exception ex) {
+            AlertUtils.mostrarError("Error en guardado");
             System.out.println("Algo ha ido mal en la funcion guardarModificacion");
             ex.printStackTrace();
         }
 
     }
 
+    /**
+     * Metodo volverAPantalla1
+     * Metodo recurso para volver a la pantalla principal.
+     * Se utiliza en todos los botones de volver o en cualquier operación similar
+     * @param event
+     */
     @FXML
     void volverAPantalla1(ActionEvent event) {
         try {
